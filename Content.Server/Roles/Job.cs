@@ -2,7 +2,10 @@ using Content.Server.Chat.Managers;
 using Content.Server.Chat.Systems;
 using Content.Shared.Roles;
 using System.Globalization;
+using System.Linq;
 using Content.Server.Mind;
+using Content.Shared.Humanoid.Prototypes;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.Roles
 {
@@ -26,17 +29,20 @@ namespace Content.Server.Roles
         [ViewVariables]
         public bool CanBeAntag;
 
-        public Job(Mind.Mind mind, JobPrototype jobPrototype) : base(mind)
+        private readonly bool _isWrongSpecieSelected;
+
+        public Job(Mind.Mind mind, JobPrototype jobPrototype, bool isWrongSpecieSelected = false) : base(mind)
         {
             Prototype = jobPrototype;
             Name = jobPrototype.LocalizedName;
             CanBeAntag = jobPrototype.CanBeAntag;
+            _isWrongSpecieSelected = isWrongSpecieSelected;
         }
 
         public override void Greet()
         {
             base.Greet();
-            
+
             var entityManager = IoCManager.Resolve<EntityManager>();
             var mindSystem = entityManager.System<MindSystem>();
 
@@ -50,6 +56,16 @@ namespace Content.Server.Roles
                     chatMgr.DispatchServerMessage(session, Loc.GetString("job-greet-important-disconnect-admin-notify"));
 
                 chatMgr.DispatchServerMessage(session, Loc.GetString("job-greet-supervisors-warning", ("jobName", Name), ("supervisors", Loc.GetString(Prototype.Supervisors))));
+
+                if (!_isWrongSpecieSelected)
+                    return;
+
+                var prototypeManager = IoCManager.Resolve<IPrototypeManager>();
+
+                chatMgr.DispatchServerMessage(session, Loc.GetString("job-wrong-species-selected", ("speciesWhitelist",
+                    string.Join(", ", Prototype.SpeciesWhitelist
+                        .Where(s => prototypeManager.HasIndex<SpeciesPrototype>(s))
+                        .Select(s => Loc.GetString(prototypeManager.Index<SpeciesPrototype>(s).Name))))));
             }
         }
     }

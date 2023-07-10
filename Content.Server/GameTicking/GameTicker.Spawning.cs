@@ -171,12 +171,14 @@ namespace Content.Server.GameTicking
             var jobPrototype = _prototypeManager.Index<JobPrototype>(jobId);
             var speciesWhitelist = jobPrototype.SpeciesWhitelist
                 .Where(s => _prototypeManager.HasIndex<SpeciesPrototype>(s)).ToHashSet();
+            var isWrongSpecieSelected = false;
 
             if (speciesWhitelist.Count > 0 && !speciesWhitelist.Contains(character.Species))
             {
                 character = GetPlayerPreferences(player).Characters.Values.OfType<HumanoidCharacterProfile>()
                                 .FirstOrDefault(c => speciesWhitelist.Contains(c.Species)) ??
                             HumanoidCharacterProfile.RandomWithSpecies(speciesWhitelist.First());
+                isWrongSpecieSelected = true;
             }
 
             PlayerJoinGame(player);
@@ -188,7 +190,7 @@ namespace Content.Server.GameTicking
             var newMind = _mind.CreateMind(data!.UserId, character.Name);
             _mind.SetUserId(newMind, data.UserId);
 
-            var job = new Job(newMind, jobPrototype);
+            var job = new Job(newMind, jobPrototype, isWrongSpecieSelected);
             _mind.AddRole(newMind, job);
 
             _playTimeTrackings.PlayerRolesChanged(player);

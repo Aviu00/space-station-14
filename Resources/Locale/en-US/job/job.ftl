@@ -4,3 +4,4 @@ job-greet-important-disconnect-admin-notify = You are playing a job that is impo
 job-greet-supervisors-warning = As the {$jobName} you answer directly to {$supervisors}. Special circumstances may change this.
 job-greet-crew-shortages = As this station was initially staffed with a skeleton crew, additional access has been added to your ID card.
 job-not-available-wait-in-lobby = The round has started, but you did not receive any of your preferred job roles (or have no preferred job roles selected) and chose to remain in the lobby. You can change this behavior on the customization screen.
+job-wrong-species-selected = Your chosen specie isn't allowed for this role. Allowed species: {$speciesWhitelist}.
