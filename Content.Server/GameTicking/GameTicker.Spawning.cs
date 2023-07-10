@@ -6,6 +6,7 @@ using Content.Server.Players;
 using Content.Server.Spawners.Components;
 using Content.Server.Speech.Components;
 using Content.Server.Station.Components;
+using Content.Shared.CCVar;
 using Content.Shared.Database;
 using Content.Shared.GameTicking;
 using Content.Shared.Humanoid.Prototypes;
@@ -173,7 +174,8 @@ namespace Content.Server.GameTicking
                 .Where(s => _prototypeManager.HasIndex<SpeciesPrototype>(s)).ToHashSet();
             var isWrongSpecieSelected = false;
 
-            if (speciesWhitelist.Count > 0 && !speciesWhitelist.Contains(character.Species))
+            if (_cfg.GetCVar(CCVars.GameRestrictRoleSpecies) && speciesWhitelist.Count > 0 &&
+                !speciesWhitelist.Contains(character.Species))
             {
                 character = GetPlayerPreferences(player).Characters.Values.OfType<HumanoidCharacterProfile>()
                                 .FirstOrDefault(c => speciesWhitelist.Contains(c.Species)) ??

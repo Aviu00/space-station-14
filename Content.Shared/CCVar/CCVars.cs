@@ -213,6 +213,12 @@ namespace Content.Shared.CCVar
             GameRoleTimers = CVarDef.Create("game.role_timers", true, CVar.SERVER | CVar.REPLICATED);
 
         /// <summary>
+        /// If roles should be restricted based on species
+        /// </summary>
+        public static readonly CVarDef<bool>
+            GameRestrictRoleSpecies = CVarDef.Create("game.restrict_role_species", true, CVar.SERVER | CVar.REPLICATED);
+
+        /// <summary>
         ///     Whether a random position offset will be applied to the station on roundstart.
         /// </summary>
         public static readonly CVarDef<bool> StationOffset =
