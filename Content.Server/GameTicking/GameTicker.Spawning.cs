@@ -8,6 +8,7 @@ using Content.Server.Speech.Components;
 using Content.Server.Station.Components;
 using Content.Shared.Database;
 using Content.Shared.GameTicking;
+using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
 using JetBrains.Annotations;
@@ -167,6 +168,17 @@ namespace Content.Server.GameTicking
                 return;
             }
 
+            var jobPrototype = _prototypeManager.Index<JobPrototype>(jobId);
+            var speciesWhitelist = jobPrototype.SpeciesWhitelist
+                .Where(s => _prototypeManager.HasIndex<SpeciesPrototype>(s)).ToHashSet();
+
+            if (speciesWhitelist.Count > 0 && !speciesWhitelist.Contains(character.Species))
+            {
+                character = GetPlayerPreferences(player).Characters.Values.OfType<HumanoidCharacterProfile>()
+                                .FirstOrDefault(c => speciesWhitelist.Contains(c.Species)) ??
+                            HumanoidCharacterProfile.RandomWithSpecies(speciesWhitelist.First());
+            }
+
             PlayerJoinGame(player);
 
             var data = player.ContentData();
@@ -176,7 +188,6 @@ namespace Content.Server.GameTicking
             var newMind = _mind.CreateMind(data!.UserId, character.Name);
             _mind.SetUserId(newMind, data.UserId);
 
-            var jobPrototype = _prototypeManager.Index<JobPrototype>(jobId);
             var job = new Job(newMind, jobPrototype);
             _mind.AddRole(newMind, job);
 

@@ -1,8 +1,10 @@
 using Content.Shared.Access;
+using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Players.PlayTimeTracking;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.List;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Set;
 
 namespace Content.Shared.Roles
 {
@@ -84,6 +86,9 @@ namespace Content.Shared.Roles
 
         [DataField("special", serverOnly:true)]
         public JobSpecial[] Special { get; private set; } = Array.Empty<JobSpecial>();
+
+        [DataField("speciesWhitelist", customTypeSerializer: typeof(PrototypeIdHashSetSerializer<SpeciesPrototype>))]
+        public HashSet<string> SpeciesWhitelist { get; } = new();
 
         [DataField("access", customTypeSerializer: typeof(PrototypeIdListSerializer<AccessLevelPrototype>))]
         public IReadOnlyCollection<string> Access { get; } = Array.Empty<string>();

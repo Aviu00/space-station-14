@@ -139,9 +139,14 @@ namespace Content.Server.GameTicking
             }
         }
 
+        private PlayerPreferences GetPlayerPreferences(IPlayerSession p)
+        {
+            return _prefsManager.GetPreferences(p.UserId);
+        }
+
         private HumanoidCharacterProfile GetPlayerProfile(IPlayerSession p)
         {
-            return (HumanoidCharacterProfile) _prefsManager.GetPreferences(p.UserId).SelectedCharacter;
+            return (HumanoidCharacterProfile) GetPlayerPreferences(p).SelectedCharacter;
         }
 
         public void PlayerJoinGame(IPlayerSession session)
