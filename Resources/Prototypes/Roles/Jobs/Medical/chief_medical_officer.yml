@@ -27,6 +27,8 @@
   - Maintenance
   - Chemistry
   - ChiefMedicalOfficer
+  speciesWhitelist:
+  - Human
 
 - type: startingGear
   id: CMOGear

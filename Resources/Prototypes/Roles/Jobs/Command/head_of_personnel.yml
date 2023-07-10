@@ -49,6 +49,8 @@
   - Atmospherics
   - Cargo
   - Medical
+  speciesWhitelist:
+  - Human
 
 - type: startingGear
   id: HoPGear

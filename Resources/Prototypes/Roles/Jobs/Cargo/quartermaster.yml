@@ -25,6 +25,8 @@
   - Maintenance
   - External
   - Command
+  speciesWhitelist:
+  - Human
 
 - type: startingGear
   id: QuartermasterGear

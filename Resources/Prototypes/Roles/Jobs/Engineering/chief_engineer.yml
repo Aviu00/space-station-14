@@ -26,6 +26,8 @@
   - External
   - ChiefEngineer
   - Atmospherics
+  speciesWhitelist:
+  - Human
 
 - type: startingGear
   id: ChiefEngineerGear

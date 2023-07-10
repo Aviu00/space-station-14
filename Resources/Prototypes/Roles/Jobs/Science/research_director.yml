@@ -18,6 +18,8 @@
   - Command
   - Maintenance
   - ResearchDirector
+  speciesWhitelist:
+  - Human
 
 - type: startingGear
   id: ResearchDirectorGear

@@ -32,6 +32,8 @@
   - Service
   - External
   - Detective
+  speciesWhitelist:
+  - Human
 
 - type: startingGear
   id: HoSGear
